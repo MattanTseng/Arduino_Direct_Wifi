@@ -6,6 +6,9 @@ Simple script for an arduino to be an access point and broadcast sensor data to 
 The code is created for the Arduino Nano 33 BLE IOT board.\
 https://store-usa.arduino.cc/products/arduino-nano-33-iot
 
+The Arduino WifiNINA library is required:
+https://www.arduino.cc/reference/en/libraries/wifinina/
+
 You will need to create a file arduino_secrets.h that contains the following information: 
 > #define SECRET_SSID "YOURSSID" \
 > #define SECRET_PASS "YOURPASS" \
