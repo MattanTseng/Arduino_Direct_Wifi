@@ -83,7 +83,7 @@ void loop() {
 
   IPAddress MyRemoteIP = IPAddress(255, 255, 255, 255);
 
-  Serial.println(MyRemoteIP);
+  //Serial.println(MyRemoteIP);
 
   // read sensors. 
   P1Val = analogRead(Pot1);
@@ -94,12 +94,17 @@ void loop() {
   S2Val = digitalRead(Switch2);
 
   // send sensor data
-  SendData(MyRemoteIP, P1Type, P1Val);
-  SendData(MyRemoteIP, P2Type, P2Val);
-  SendData(MyRemoteIP, P3Type, P3Val);
-  SendData(MyRemoteIP, P4Type, P4Val);
-  SendData(MyRemoteIP, S1Type, S1Val);
-  SendData(MyRemoteIP, S2Type, S2Val);
+  //SendData(MyRemoteIP, P1Type, P1Val);
+  //SendData(MyRemoteIP, P2Type, P2Val);
+  //SendData(MyRemoteIP, P3Type, P3Val);
+  //SendData(MyRemoteIP, P4Type, P4Val);
+  //SendData(MyRemoteIP, S1Type, S1Val);
+  //SendData(MyRemoteIP, S2Type, S2Val);
+
+  //TODO: Create a function to cleanly concatenate the types and values but that is a Mattan problem...
+  SendAllData(MyRemoteIP, P1Type + String(P1Val) + "," + P2Type + String(P2Val) + "," + P3Type + String(P3Val) + "," + P4Type + String(P4Val) + "," + S1Type + String(S1Val) + "," + S2Type + String(S2Val));
+  //Delay to prevent overloading with packets
+  delay(25);
 }
 
 // some functions for formatting and sending UDP packets
@@ -126,4 +131,16 @@ void SendData(IPAddress targetIP, String Source, int Value){
     udp.endPacket();
     digitalWrite(LED_BUILTIN, LOW); 
     
+}
+
+void SendAllData(IPAddress targetIP, String Content){
+    digitalWrite(LED_BUILTIN, HIGH);
+
+    char buf[Content.length() + 1];
+    Content.toCharArray(buf, 50);
+    udp.beginPacket(targetIP, TXPort);
+    udp.write(buf);
+    udp.endPacket();
+    digitalWrite(LED_BUILTIN, LOW);
+
 }
